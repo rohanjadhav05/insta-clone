@@ -14,16 +14,16 @@ export default function Home() {
     <div id="index" style={{display:"flex", justifyContent:"center", paddingTop:'100px'}}>
        {
         isLargeScreen && (
-          <div style={{ flex: "1", maxWidth: "50%" , paddingLeft:"200px"}}>
+          <div style={{ flex: "1", maxWidth: "50%", display: 'flex', justifyContent: 'flex-end'}}>
             <Image
               src="/home.jpeg"
               alt="example"
               width={400} 
-              height={500}
+              height={530}
             />
           </div>
       )}
-      <div style={{ flex: "1", maxWidth: "50%", paddingRight:'100px' }}> {/* Adjust the width as needed */}
+      <div style={{ flex: "1", maxWidth: "50%", display: 'flex', justifyContent: 'flex-start' }}> {/* Adjust the width as needed */}
         <LoginCard />
       </div>
     </div>
