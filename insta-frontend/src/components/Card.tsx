@@ -8,11 +8,37 @@ import Button from '@mui/material/Button';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import Link from 'next/link';
 import { IconButton, InputAdornment } from "@mui/material";
+import { UserDto, loginUser } from '@/service/homeService';
+import { useRouter } from 'next/router';
 
 const LoginCard = () => {
 
   const [showPassword, setShowPassword] = useState(false);
+  const [userName, setUserName] = useState('');
+  const [userPass, setUserPass] = useState('');
+  const router = useRouter();
+  const [isFormFilled, setIsFormFilled] = useState(false);
 
+  const handleInputChange = (e : any) => {
+    const { id, value } = e.target;
+    switch (id) {
+        case 'userName':
+            setUserName(value);
+            break;
+        case 'password':
+            setUserPass(value);
+            break;
+        default:
+            break;
+    }
+    console.log("UserPass : "+userPass);
+    if (userName && userPass) {
+        setIsFormFilled(true);
+    } else {
+        setIsFormFilled(false);
+    }
+};
+  
   return (
     <div>
         <Card sx={{ maxWidth: 400, margin:'20px' }}>
@@ -21,7 +47,7 @@ const LoginCard = () => {
                 Instagram
             </Typography>
             <TextField
-                    id="email"
+                    id="userName"
                     label="Phone number, username or email address"
                     type="email"
                     variant="filled"
@@ -30,6 +56,9 @@ const LoginCard = () => {
                     style={{margin:"10px"}}
                     InputLabelProps={{
                         style: { fontSize: 15 } // Adjust the font size as needed
+                    }}
+                    onChange={(e) => {
+                      handleInputChange(e)
                     }}
                 />
                 <TextField
@@ -40,6 +69,9 @@ const LoginCard = () => {
                     fullWidth
                     required
                     style={{margin:"10px"}}
+                    onChange={(e) => {
+                      handleInputChange(e)
+                    }}
                     InputLabelProps={{
                         style: { fontSize: 15 } // Adjust the font size as needed
                     }}
@@ -56,7 +88,29 @@ const LoginCard = () => {
                       }}
                 />
 
-            <Button variant="contained" color="primary" fullWidth style={{margin:"10px"}}>
+            <Button variant="contained" 
+                    color="primary" 
+                    fullWidth 
+                    style={{margin:"10px"}} 
+                    disabled={!isFormFilled}
+                    onClick={async () => {
+                      const userPhone : string = "";
+                      const userPost : number = 0;
+                      const userFullName : string = "";
+                      const userDto : UserDto = {userName, userPhone, userFullName, userPass, userPost};
+                      if(userName.length == 0){
+                        window.alert("Please enter UserName")
+                      }
+                      else if(userPass.length == 0){
+                        window.alert("Please enter Password")
+                      }else{
+                        loginUser(userDto).then((response) => {
+                          router.push("/home");
+                        }).catch(err => {
+                          console.log(err);
+                        })
+                      }
+                    }}>
                 Log in
             </Button>
             <div style={{display:"flex", margin:"5px"}}>

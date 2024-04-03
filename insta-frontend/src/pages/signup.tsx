@@ -8,9 +8,44 @@ import Button from '@mui/material/Button';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import Link from 'next/link';
 import { IconButton, InputAdornment } from "@mui/material";
+import { UserDto, signupUser } from '@/service/homeService';
+import { useRouter } from 'next/router';
 
 const signup = () => {
     const [showPassword, setShowPassword] = useState(false);
+    const [userName, setUserName] = useState('');
+    const [userPass, setUserPass] = useState('');
+    const [userPhone, setUserPhone] = useState('');
+    const [userFullName, setUserFullName] = useState('');
+    const [userPost, setUserPost] = useState(0);
+    const router = useRouter();
+    const [isFormFilled, setIsFormFilled] = useState(false);
+
+    const handleInputChange = (e : any) => {
+        const { id, value } = e.target;
+        switch (id) {
+            case 'mobile':
+                setUserPhone(value);
+                break;
+            case 'name':
+                setUserFullName(value);
+                break;
+            case 'userName':
+                setUserName(value);
+                break;
+            case 'password':
+                setUserPass(value);
+                break;
+            default:
+                break;
+        }
+
+        if (userPhone.length == 10 && userFullName && userName && userPass) {
+            setIsFormFilled(true);
+        } else {
+            setIsFormFilled(false);
+        }
+    };
 
   return (
     <div id="signup" >
@@ -38,8 +73,8 @@ const signup = () => {
                         <Divider variant='inset' style={{ width: '42%', margin: '10px' }} />
                     </div>
                     <TextField
-                        id="email"
-                        label="Mobile number or email address"
+                        id="mobile"
+                        label="Mobile number"
                         type="email"
                         variant="filled"
                         fullWidth
@@ -47,6 +82,9 @@ const signup = () => {
                         style={{margin:"4px 10px"}}
                         InputLabelProps={{
                             style: { fontSize: 15 } // Adjust the font size as needed
+                        }}
+                        onChange={(e) => {
+                            handleInputChange(e)
                         }}
                     />
                     <TextField
@@ -60,6 +98,10 @@ const signup = () => {
                         InputLabelProps={{
                             style: { fontSize: 15 } // Adjust the font size as needed
                         }}
+                        onChange={(e) => {
+                            handleInputChange(e)
+                        }}
+                        
                     />
                     <TextField
                         id="userName"
@@ -71,6 +113,9 @@ const signup = () => {
                         style={{margin:"4px 10px"}}
                         InputLabelProps={{
                             style: { fontSize: 15 } // Adjust the font size as needed
+                        }}
+                        onChange={(e) => {
+                            handleInputChange(e)
                         }}
                     />
                     <TextField
@@ -84,6 +129,9 @@ const signup = () => {
                         InputLabelProps={{
                             style: { fontSize: 15 }, // Adjust the font size as needed
             
+                        }}
+                        onChange={(e) => {
+                            handleInputChange(e)
                         }}
                         InputProps={{
                             endAdornment: (
@@ -113,6 +161,15 @@ const signup = () => {
                         color="primary"
                         fullWidth
                         style={{ margin: '10px', textTransform: 'none', textAlign:"center"}} // Adjust styling as needed
+                        disabled={!isFormFilled}
+                        onClick={async () => {
+                            const userDto : UserDto= {userPhone, userFullName, userName, userPass, userPost }
+                            signupUser(userDto).then((response) => {
+                                router.push("/home");
+                            }).catch(err => {
+                                console.log(err);
+                            })
+                        }}
                     >
                         Sign Up
                     </Button>

@@ -11,6 +11,7 @@ public class UserDto {
 
 	private Long userId;
 	private String userName;
+	private String UserFullName;
 	private String userPhone;
 	private String userPass;
 	private Long userPost;

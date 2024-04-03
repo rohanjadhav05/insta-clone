@@ -15,6 +15,7 @@ public class InstaMapper {
 		return new User(
 				userDto.getUserId(),
 				userDto.getUserName(),
+				userDto.getUserFullName(),
 				userDto.getUserPhone(),
 				userDto.getUserPass(),
 				userDto.getUserPost()
@@ -25,6 +26,7 @@ public class InstaMapper {
 		return new UserDto(
 				user.getUserId(),
 				user.getUserName(),
+				user.getUserFullName(),
 				user.getUserPhone(),
 				user.getUserPass(),
 				user.getUserPost()
